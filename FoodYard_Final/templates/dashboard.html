@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Donor Dashboard | FoodYard{% endblock %}
+{% block content %}
+<section class="dashboard-page">
+    <div class="container">
+        <div class="dashboard-head">
+            <div><div class="eyebrow">DONOR DASHBOARD</div><h1>Hello, {{ current_name }} 👋</h1><p>Manage your food donations and follow their progress.</p></div>
+            <a class="btn btn-primary" href="{{ url_for('donate') }}">+ Donate Food</a>
+        </div>
+
+        <div class="metric-grid">
+            <div class="metric"><span class="metric-icon">📦</span><div><strong>{{ stats.total or 0 }}</strong><span>Total donations</span></div></div>
+            <div class="metric"><span class="metric-icon">⚖️</span><div><strong>{{ "%.1f"|format(stats.kg or 0) }} KG</strong><span>Food donated</span></div></div>
+            <div class="metric"><span class="metric-icon">⏳</span><div><strong>{{ stats.pending or 0 }}</strong><span>Pending</span></div></div>
+            <div class="metric"><span class="metric-icon">❤️</span><div><strong>{{ stats.completed or 0 }}</strong><span>Completed</span></div></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head"><div><h2>My Donations</h2><p>Only donations submitted from your account are visible here.</p></div><span class="role-badge donor">DONOR ONLY</span></div>
+            {% if donations %}
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>ID</th><th>Food</th><th>Qty.</th><th>Pickup address</th><th>Date</th><th>Status</th></tr></thead>
+                    <tbody>
+                    {% for d in donations %}
+                        <tr>
+                            <td>#{{ d.id }}</td><td><strong>{{ d.food_type }}</strong>{% if d.note %}<small>{{ d.note }}</small>{% endif %}</td>
+                            <td>{{ "%.1f"|format(d.quantity) }} kg</td><td>{{ d.address }}</td><td>{{ d.food_date }}</td>
+                            <td><span class="status {{ d.status|lower }}">{{ d.status }}</span></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty"><div>🍱</div><h3>No donations yet</h3><p>Your first donation can start the journey.</p><a class="btn btn-primary" href="{{ url_for('donate') }}">Make a Donation</a></div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

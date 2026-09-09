@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Create Donor Account | FoodYard{% endblock %}
+{% block content %}
+<section class="auth-page">
+    <div class="auth-shell">
+        <div class="auth-visual">
+            <div class="eyebrow">🌱 JOIN FOODYARD</div>
+            <h1>Your extra food can become someone’s meal.</h1>
+            <p>Create a donor account and keep your complete donation history in one place.</p>
+            <div class="visual-points"><span>✓ Free donor account</span><span>✓ Secure password storage</span><span>✓ Track donation status</span></div>
+        </div>
+        <div class="auth-card">
+            <div class="auth-logo">🍃</div>
+            <div class="eyebrow">DONOR REGISTRATION</div>
+            <h2>Create your account</h2>
+            <p class="muted">Only donor accounts can be created here. Admin accounts are controlled separately.</p>
+            <form method="POST" class="form">
+                <label>Full name
+                    <input type="text" name="name" placeholder="Your name" required>
+                </label>
+                <label>Email address
+                    <input type="email" name="email" placeholder="you@example.com" required>
+                </label>
+                <label>Password
+                    <input type="password" name="password" placeholder="Minimum 6 characters" minlength="6" required>
+                </label>
+                <button class="btn btn-primary btn-full" type="submit">Create Donor Account →</button>
+            </form>
+            <p class="auth-switch">Already registered? <a href="{{ url_for('donor_login') }}">Donor login</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}

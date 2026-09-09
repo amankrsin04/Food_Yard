@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | FoodYard{% endblock %}
+{% block content %}
+<section class="dashboard-page admin-page">
+    <div class="container">
+        <div class="dashboard-head">
+            <div><div class="eyebrow">🛡️ ADMIN CONTROL CENTER</div><h1>FoodYard Administration</h1><p>Review donations, monitor donors and control the donation workflow.</p></div>
+            <span class="role-badge admin">ADMIN ACCESS</span>
+        </div>
+
+        <div class="metric-grid">
+            <div class="metric"><span class="metric-icon">📦</span><div><strong>{{ stats.total or 0 }}</strong><span>Total donations</span></div></div>
+            <div class="metric"><span class="metric-icon">⚖️</span><div><strong>{{ "%.1f"|format(stats.kg or 0) }} KG</strong><span>Total food</span></div></div>
+            <div class="metric"><span class="metric-icon">⏳</span><div><strong>{{ stats.pending or 0 }}</strong><span>Pending review</span></div></div>
+            <div class="metric"><span class="metric-icon">❤️</span><div><strong>{{ stats.completed or 0 }}</strong><span>Completed</span></div></div>
+        </div>
+
+        <div class="admin-grid">
+            <div class="panel">
+                <div class="panel-head"><div><h2>All Donations</h2><p>Every donor's submission is visible to administrators.</p></div></div>
+                {% if donations %}
+                <div class="table-wrap">
+                    <table class="admin-table">
+                        <thead><tr><th>ID</th><th>Donor</th><th>Food</th><th>Qty.</th><th>Date</th><th>Address</th><th>Status</th></tr></thead>
+                        <tbody>
+                        {% for d in donations %}
+                        <tr>
+                            <td>#{{ d.id }}</td>
+                            <td><strong>{{ d.donor }}</strong><small>{{ d.donor_email }}</small></td>
+                            <td>{{ d.food_type }}</td><td>{{ "%.1f"|format(d.quantity) }} kg</td><td>{{ d.food_date }}</td>
+                            <td>{{ d.address }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('update_status', donation_id=d.id) }}" class="status-form">
+                                    <select name="status" onchange="this.form.submit()">
+                                        {% for s in ['Pending','Accepted','Collected','Distributed','Completed','Rejected'] %}
+                                            <option value="{{ s }}" {% if d.status == s %}selected{% endif %}>{{ s }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty"><div>📦</div><h3>No donations found</h3><p>Donations submitted by users will appear here.</p></div>
+                {% endif %}
+            </div>
+
+            <div class="side-stack">
+                <div class="panel compact-panel">
+                    <div class="panel-head"><div><h2>Donors</h2><p>Registered donor accounts.</p></div></div>
+                    <div class="people-list">
+                        {% for donor in donors %}
+                        <div class="person"><div class="avatar">{{ donor.name[0]|upper }}</div><div><strong>{{ donor.name }}</strong><span>{{ donor.email }}</span></div></div>
+                        {% else %}<p class="muted">No donors registered yet.</p>{% endfor %}
+                    </div>
+                </div>
+
+                <div class="panel compact-panel">
+                    <div class="panel-head"><div><h2>Messages</h2><p>Contact submissions.</p></div></div>
+                    <div class="message-list">
+                        {% for m in messages %}
+                        <div class="message"><strong>{{ m.name }}</strong><span>{{ m.email }}</span><p>{{ m.message }}</p><small>{{ m.created_at }}</small></div>
+                        {% else %}<p class="muted">No messages yet.</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

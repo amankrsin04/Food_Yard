@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Donate Food | FoodYard{% endblock %}
+{% block content %}
+<section class="form-page">
+    <div class="container narrow">
+        <div class="page-intro"><div class="eyebrow">DONATE FOOD</div><h1>Turn surplus into support.</h1><p>Provide accurate details so the FoodYard team can review and manage your donation.</p></div>
+        <div class="donate-layout">
+            <div class="panel">
+                <form method="POST" class="form">
+                    <div class="form-row">
+                        <label>Food type
+                            <input type="text" name="food_type" placeholder="e.g. Cooked meals, rice, bread" required>
+                        </label>
+                        <label>Quantity (KG)
+                            <input type="number" name="quantity" step="0.1" min="0.1" placeholder="e.g. 10" required>
+                        </label>
+                    </div>
+                    <label>Pickup / food address
+                        <textarea name="address" rows="3" placeholder="Enter the location where the food is available" required></textarea>
+                    </label>
+                    <label>Food available date
+                        <input type="date" name="food_date" required>
+                    </label>
+                    <label>Additional note <span class="optional">Optional</span>
+                        <textarea name="note" rows="4" placeholder="Mention packaging, preferred pickup time, allergens, etc."></textarea>
+                    </label>
+                    <button class="btn btn-primary btn-full" type="submit">Submit Donation →</button>
+                </form>
+            </div>
+            <aside class="info-card">
+                <div class="big-icon">🥗</div>
+                <h3>Donation tips</h3>
+                <ul><li>Provide clean, safe food.</li><li>Use a realistic quantity.</li><li>Give an accurate pickup address.</li><li>Add useful handling notes.</li></ul>
+                <div class="mini-note">Your donation starts as <strong>Pending</strong>. An admin will review and update its status.</div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
